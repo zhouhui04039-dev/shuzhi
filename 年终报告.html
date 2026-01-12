@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年终述职报告 - 周辉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+        body {
+            background-color: #f0f7ff;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 0;
+            overflow-x: hidden;
+        }
+        /* 主页头部 */
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        .header-title {
+            font-size: 36px;
+            color: #0f52ba;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            font-size: 18px;
+            color: #6687b7;
+        }
+        /* 四宫格容器 */
+        .grid-container {
+            width: 900px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px;
+            margin-bottom: 80px;
+        }
+        /* 圆形卡片 */
+        .circle-card {
+            width: 350px;
+            height: 350px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(14, 89, 168, 0.12);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 4px solid #e8f3ff;
+        }
+        .circle-card:hover {
+            transform: scale(1.08) translateY(-10px);
+            box-shadow: 0 15px 35px rgba(14, 89, 168, 0.2);
+            border-color: #1677ff;
+            background-color: #f8fbff;
+        }
+        .card-icon {
+            font-size: 64px;
+            color: #1677ff;
+            margin-bottom: 25px;
+        }
+        .card-title {
+            font-size: 24px;
+            color: #0f52ba;
+            font-weight: 600;
+            text-align: center;
+            width: 80%;
+        }
+        /* 弹窗遮罩层 */
+        .modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        /* 大尺寸弹窗内容区（占屏幕85%） */
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            width: 85%;
+            min-width: 1100px;
+            height: 85vh;
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow-y: auto;
+        }
+        /* 弹窗显示状态 */
+        .modal-show {
+            display: block;
+            opacity: 1;
+        }
+        .modal-show .modal-content {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+        /* 关闭按钮 */
+        .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e8f3ff;
+            color: #1677ff;
+            border: none;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .close-btn:hover {
+            background-color: #1677ff;
+            color: #ffffff;
+            transform: rotate(90deg);
+        }
+        /* 弹窗内样式 */
+        .modal-header {
+            font-size: 32px;
+            color: #0f52ba;
+            font-weight: 700;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #e8f3ff;
+        }
+        .subsection {
+            margin-bottom: 50px;
+        }
+        .subsection-title {
+            font-size: 24px;
+            color: #1e68c3;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .subsection-title::before {
+            content: "";
+            width: 6px;
+            height: 24px;
+            background-color: #1677ff;
+            border-radius: 3px;
+        }
+        .text-content {
+            font-size: 16px;
+            color: #4e5969;
+            line-height: 1.9;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        /* 案例卡片组 */
+        .case-group {
+            display: flex;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        .case-card {
+            flex: 1;
+            min-width: 400px;
+            background-color: #e8f3ff;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid #1677ff;
+        }
+        .case-title {
+            font-size: 18px;
+            color: #0f52ba;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .case-desc {
+            font-size: 15px;
+            color: #4e5969;
+            line-height: 1.8;
+        }
+        /* 数据卡片组 */
+        .data-group {
+            display: flex;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        .data-card {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 30px;
+            background-color: #f0f7ff;
+            border-radius: 12px;
+        }
+        .data-num {
+            font-size: 48px;
+            color: #1677ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .data-text {
+            font-size: 16px;
+            color: #6687b7;
+        }
+        /* 列表样式 */
+        .custom-list {
+            padding-left: 25px;
+            margin: 20px 0;
+        }
+        .custom-list li {
+            font-size: 16px;
+            color: #4e5969;
+            line-height: 1.9;
+            margin-bottom: 15px;
+        }
+        .custom-list li span {
+            color: #1677ff;
+            font-weight: 600;
+        }
+        /* 值班保障模块 */
+        .duty-box {
+            background-color: #f0f7ff;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        .duty-title {
+            font-size: 18px;
+            color: #0f52ba;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        /* AI应用模块 */
+        .ai-box {
+            background-color: #f0f7ff;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        .ai-title {
+            font-size: 18px;
+            color: #0f52ba;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        /* 项目卡片组 */
+        .project-group {
+            display: flex;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        .project-card {
+            flex: 1;
+            min-width: 450px;
+            background-color: #e8f3ff;
+            border-radius: 12px;
+            padding: 30px;
+            border-left: 5px solid #1677ff;
+        }
+        .project-title {
+            font-size: 20px;
+            color: #0f52ba;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #d1e7ff;
+            padding-bottom: 10px;
+        }
+        /* 落款样式 */
+        .signature {
+            text-align: right;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e8f3ff;
+        }
+        .signature-text {
+            font-size: 18px;
+            color: #4e5969;
+            margin-bottom: 10px;
+        }
+    </style>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 主页头部 -->
+    <div class="header">
+        <h1 class="header-title">2025年度个人述职报告</h1>
+        <p class="header-sub">国内业务部-客服枣庄-周辉</p>
+    </div>
+
+    <!-- 四宫格圆形卡片 -->
+    <div class="grid-container">
+        <!-- 卡片1：工作亮点 -->
+        <div class="circle-card" onclick="openModal('modal1')">
+            <div class="card-icon"><i class="fa-solid fa-wrench"></i></div>
+            <div class="card-title">工作亮点</div>
+        </div>
+        <!-- 卡片2：重点项目 -->
+        <div class="circle-card" onclick="openModal('modal2')">
+            <div class="card-icon"><i class="fa-solid fa-car"></i></div>
+            <div class="card-title">重点项目</div>
+        </div>
+        <!-- 卡片3：工作创新 -->
+        <div class="circle-card" onclick="openModal('modal3')">
+            <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
+            <div class="card-title">工作创新</div>
+        </div>
+        <!-- 卡片4：未来规划 -->
+        <div class="circle-card" onclick="openModal('modal4')">
+            <div class="card-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+            <div class="card-title">未来规划</div>
+        </div>
+    </div>
+
+    <!-- 弹窗1：工作亮点 -->
+    <div class="modal-mask" id="modal1">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal1')">&times;</button>
+            <div class="modal-header">一、工作亮点：技术赋能 效率倍增</div>
+            
+            <div class="subsection">
+                <h2 class="subsection-title">1.1 Excel VBA技术规模化落地</h2>
+                <p class="text-content">
+                    针对日常舆情工作中Excel数据处理重复繁琐、耗时久、易出错的痛点，2025年系统性研究VBA自动化技术，结合实际业务场景开发定制化脚本，全面落地至<span style="color: #1677ff; font-weight: 600;">HM日报、哈啰新闻稿周报、哈啰日报、长城日报、英格卡周报、优必选日报等多个项目</span>，实现数据采集、汇总、填充、校验全流程自动化，累计优化工时<span style="color: #1677ff; font-weight: 600;">100小时以上</span>，减少人工重复操作90%。
+                </p>
+
+                <div class="case-group">
+                    <div class="case-card">
+                        <div class="case-title">案例1：哈啰新闻稿周报优化</div>
+                        <div class="case-desc">
+                            <strong>原流程：</strong>手动新建sheet→逐条复制舆情字段→分类汇总→格式调整，单期需耗时40分钟，且易出现字段遗漏<br>
+                            <strong>优化后：</strong>VBA脚本一键触发，自动建表、抓取数据、分类排版，单期耗时缩短至8分钟，效率提升80%，零失误率
+                        </div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-title">案例2：H&M日报优化</div>
+                        <div class="case-desc">
+                            <strong>原流程：</strong>手动查询各品牌正负面数据→逐一填写至Word指定位置→反复交叉验证，单期耗时35分钟，错误率约5%<br>
+                            <strong>优化后：</strong>VBA自动对接数据源→汇总数据→精准填充Word模板→自动校验，单期耗时缩短至5分钟，错误率降至0
+                        </div>
+                    </div>
+                </div>
+                <p class="text-content"><strong>核心亮点：</strong>将技术能力转化为实际生产力，用自动化脚本替代90%的重复性人工操作，从“机械执行”转向“技术提效”，大幅降低人为失误率的同时释放大量核心工作时间。</p>
+            </div>
+
+            <div class="subsection">
+                <h2 class="subsection-title">1.2 办公软硬件全维度升级改造</h2>
+                <p class="text-content">
+                    牵头完成公司全量办公设备的软硬件升级工作，从硬件性能、软件兼容性两个维度解决办公卡顿、工具失效等问题，为舆情监测、数据处理等核心工作筑牢设备基础。
+                </p>
+                <p class="text-content">
+                    <strong>硬件升级：</strong>完成所有办公电脑内存统一更换，内存容量提升2倍，设备运行速度平均提升50%，彻底解决多软件同时运行卡顿问题；<br>
+                    <strong>软件升级：</strong>将操作系统及Excel、Outlook、PPT等核心办公软件统一升级至最新版本，解决旧版本插件不兼容、宏功能受限等问题，消除软件崩溃隐患。
+                </p>
+
+                <div class="data-group">
+                    <div class="data-card">
+                        <div class="data-num">30%</div>
+                        <div class="data-text">整体办公效率提升</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-num">0</div>
+                        <div class="data-text">核心软件月崩溃次数</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-num">50%</div>
+                        <div class="data-text">设备运行速度提升</div>
+                    </div>
+                </div>
+                <p class="text-content"><strong>核心亮点：</strong>从基础保障层面系统性解决团队办公效率瓶颈，通过软硬件升级实现“零卡顿、零崩溃”的办公环境，为所有同事的日常工作提供了稳定的设备支撑。</p>
+            </div>
+
+            <div class="subsection">
+                <h2 class="subsection-title">1.3 技术分享与能力普及</h2>
+                <p class="text-content">
+                    主动承担团队技术赋能职责，定期组织技术交流沟通会，面向全体同事普及基础AI知识，分享最新最前沿的行业技术动态，开展AI应用、Excel高效办公等专项培训，覆盖团队所有成员。
+                </p>
+                <p class="text-content">
+                    <strong>培训内容：</strong>包括Excel函数进阶、VBA基础脚本编写、AI工具选型与应用、舆情分析智能化方法等，重点讲解了AI联网功能在舆情信息检索中的实操应用；<br>
+                    <strong>培训形式：</strong>采用“理论讲解+实操演示+案例拆解”的方式，确保同事能够快速掌握并应用到实际工作中；<br>
+                    <strong>培训效果：</strong>累计开展培训6场，覆盖人员30余人次，团队整体办公效率平均提升15%。
+                </p>
+                <p class="text-content"><strong>核心亮点：</strong>将个人技术能力转化为团队整体能力，通过技术分享实现“一人会到人人会”的效果，推动整个团队从“传统办公”向“智能办公”转型。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗2：重点项目 -->
+    <div class="modal-mask" id="modal2">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal2')">&times;</button>
+            <div class="modal-header">二、重点项目：长城汽车</div>
+            
+            <div class="project-group">
+                <div class="project-card">
+                    <div class="project-title">项目一：长城汽车舆情专项</div>
+                    <div class="subsection">
+                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.1 承接项目的初心与想法</h2>
+                        <p class="text-content">
+                            长城汽车舆情专项报告项目，是我首次接触此类规模较大、要求较高的专项项目。面对这一全新挑战，我没有选择退缩，而是将其视为提升自身能力的重要机会，希望通过承接该项目突破自我舒适区，尝试掌握大型专项项目的运作模式、流程规范和交付标准，实现个人工作能力的跨越式提升。
+                        </p>
+
+                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.2 执行过程的付出与辛苦</h2>
+                        <p class="text-content">
+                            由于项目初期对流程不熟悉、数据量较大且交付时间严格，在执行过程中面临诸多挑战，也付出了大量的时间和精力：
+                        </p>
+                        <div class="duty-box">
+                            <div class="duty-title">执行过程的辛苦付出</div>
+                            <ul class="custom-list">
+                                <li><strong>常态化加班：</strong>为确保日报按时交付，工作日经常加班至晚8点以后，梳理数据、核对信息、优化报告内容；</li>
+                                <li><strong>额外值班任务：</strong>主动认领周末及节假日的额外值班任务，放弃休息时间保障舆情信息监测不中断；</li>
+                                <li><strong>高强度学习：</strong>利用休息时间学习专项项目相关的专业知识、数据处理方法，快速补齐能力短板。</li>
+                            </ul>
+                        </div>
+
+                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.3 熟悉项目后的优化方法</h2>
+                        <p class="text-content">
+                            随着对项目的熟悉，结合自身技术能力，制定了“批量处理+人机核验+规范输出”三维优化策略，大幅提升项目交付效率与质量。
+                        </p>
+                        <ul class="custom-list">
+                            <li><span>维度一：VBA批量处理升级</span>
+                                <br>原流程需手动逐条复制舆情信息至日报模板，单份日报制作耗时约30分钟；通过VBA开发专属脚本，实现舆情数据批量抓取、分类汇总、模板填充，单份日报制作时间缩短至12分钟，效率提升60%。
+                            </li>
+                            <li><span>维度二：AI+人工协同纠错</span>
+                                <br>引入AI工具进行日报及专项报告的基础错误筛查，重点核查错别字、逻辑矛盾、数据错误等问题；人工负责深度校验与内容优化，形成“AI初查+人工精校”双重校验模式，报告错误率从12%降至3%，降低75%。
+                            </li>
+                            <li><span>维度三：AI规范内容输出</span>
+                                <br>针对专项报告中的数据热榜、趋势分析等标准化内容，由AI工具统一生成内容与格式，人工仅需进行最终核验；解决了人工撰写格式不统一、表述不规范的问题，专项报告交付时效提升50%。
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-title">项目二：金风科技日常舆情服务</div>
+                    <div class="subsection">
+                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.1 日常工作内容</h2>
+                        <p class="text-content">
+                            2025年持续为金风科技提供日常舆情日报服务，每日按时输出包含行业动态、竞品信息、品牌相关舆情的完整日报，确保客户能够及时掌握最新舆情态势。日报内容涵盖信息收集、分类整理、重点标注、趋势分析等多个维度，满足客户日常舆情监测需求。
+                        </p>
+
+                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.2 AI联网功能的核心应用</h2>
+                        <p class="text-content">
+                            为避免重要信息遗漏或泄露，创新性地运用AI工具的联网检索功能，构建了全方位的信息筛查体系：
+                        </p>
+                        <ul class="custom-list">
+                            <li><span>全网实时检索：</span>
+                                <br>利用AI的联网功能，设置关键词实时监控全网信息，覆盖新闻媒体、社交媒体、行业论坛等多个渠道，确保金风科技相关的重要舆情信息无遗漏；
+                            </li>
+                            <li><span>敏感信息识别：</span>
+                                <br>通过AI联网检索结果的智能分析，自动识别涉及企业核心数据、未公开信息、负面舆情等敏感内容，第一时间预警并处理；
+                            </li>
+                            <li><span>信息溯源验证：</span>
+                                <br>对检索到的关键信息，利用AI联网功能进行多源验证，确认信息真实性和传播路径，避免不实信息进入日报，同时防止企业内部重要信息外泄；
+                            </li>
+                            <li><span>检索效率提升：</span>
+                                <br>AI联网检索替代传统人工逐条浏览网页的方式，信息检索效率提升80%，每日可覆盖的信息源数量从20个增至100个以上。
+                            </li>
+                        </ul>
+
+                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.3 工作成果</h2>
+                        <div class="data-group">
+                            <div class="data-card">
+                                <div class="data-num">365</div>
+                                <div class="data-text">全年日报交付天数</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-num">0</div>
+                                <div class="data-text">重要信息遗漏次数</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-num">80%</div>
+                                <div class="data-text">信息检索效率提升</div>
+                            </div>
+                        </div>
+                        <p class="text-content">通过AI联网功能的深度应用，实现了金风科技舆情信息的“全覆盖、无遗漏、快响应”，有效保障了客户的信息安全和舆情监测需求。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗3：工作创新 -->
+    <div class="modal-mask" id="modal3">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal3')">&times;</button>
+            <div class="modal-header">三、工作创新：破解痛点 释放人力</div>
+            
+            <div class="subsection">
+                <h2 class="subsection-title">3.1 插件工具整合，攻克日常工作难题</h2>
+                <p class="text-content">
+                    针对舆情工作中遇到的网页文本无法复制、视频无法下载、外网访问受限、网页截图繁琐等痛点，主动挖掘并整合多款高效工具插件，形成“工具库”解决团队共性问题，全年累计解决跨部门工作难题20余项。
+                </p>
+
+                <ul class="custom-list">
+                    <li><span>问题1：网页文本无法复制</span>
+                        <br>解决方案：引入supcopy插件，突破网页文本复制限制，支持各类舆情网站内容抓取，节省手动录入时间。
+                    </li>
+                    <li><span>问题2：舆情视频无法下载</span>
+                        <br>解决方案：配置专用视频下载插件，支持主流平台视频解析与下载，满足舆情素材留存需求。
+                    </li>
+                    <li><span>问题3：外网舆情监测受限</span>
+                        <br>解决方案：搭建稳定VPN通道，保障海外舆情网站的正常访问，实现舆情监测全覆盖。
+                    </li>
+                    <li><span>问题4：网页截图效率低</span>
+                        <br>解决方案：部署自动截图插件，支持整页截图、定时截图，截图后自动保存至指定文件夹，提升截图效率。
+                    </li>
+                    <li><span>问题5：特殊数据处理复杂</span>
+                        <br>解决方案：结合VBA技术定制化开发脚本，解决非常规数据的清洗、转换、汇总问题，满足个性化需求。
+                    </li>
+                </ul>
+                <p class="text-content"><strong>核心价值：</strong>将团队从繁琐的基础操作中解放出来，聚焦于舆情分析、策略制定等高价值工作，整体工作流畅度提升40%。</p>
+            </div>
+
+            <div class="subsection">
+                <h2 class="subsection-title">3.2 AI工具深度融合，构建高效工作模式</h2>
+                <p class="text-content">
+                    2025年将AI工具作为核心辅助手段，尤其深度应用AI的联网检索功能，秉持“AI做基础工作，人做核心工作”的理念，构建“AI赋能+人工精进”的高效工作模式，最大化发挥技术价值。
+                </p>
+
+                <div class="ai-box">
+                    <div class="ai-title">AI工具核心应用场景（含联网功能）</div>
+                    <ul class="custom-list">
+                        <li><strong>场景一：AI联网全网信息检索</strong>
+                            <br>利用AI的联网功能，实现多渠道、全维度的舆情信息实时检索，覆盖传统人工无法触及的信息源，确保重要信息无遗漏，检索效率提升80%以上（已在金风科技项目中规模化应用）。
+                        </li>
+                        <li><strong>场景二：基础错误筛查</strong>
+                            <br>利用AI工具对日报、专项报告进行错别字、语法错误、逻辑矛盾、数据一致性核查，替代人工重复性校对工作，校对效率提升80%。
+                        </li>
+                        <li><strong>场景三：技术难题咨询</strong>
+                            <br>将AI作为“技术顾问”，遇到VBA脚本编写、工具使用、流程优化等问题时，第一时间咨询AI获取解决方案，问题解决周期缩短60%。
+                        </li>
+                        <li><strong>场景四：工具适配优化</strong>
+                            <br>开展多类型AI工具对比试用，针对不同项目特性筛选适配工具：如日报校对用A工具、专项内容生成用B工具、数据可视化用C工具，实现“一项目一适配”，AI应用效能最大化。
+                        </li>
+                        <li><strong>场景五：标准化内容输出</strong>
+                            <br>将舆情数据热榜、趋势分析、行业报告模板化内容交由AI生成，人工仅需进行内容优化与逻辑校验，释放70%的基础撰写时间。
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="text-content">
+                    核心创新点：<span style="color: #1677ff; font-weight: 600;">将AI定位为“虚拟员工”，尤其深度挖掘AI联网检索功能的价值，让AI承接所有重复性、基础性、标准化工作</span>，使人力聚焦于复杂舆情分析、客户需求对接、流程创新等高附加值工作，实现“人机协同”效率最优。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗4：未来规划 -->
+    <div class="modal-mask" id="modal4">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal4')">&times;</button>
+            <div class="modal-header">四、未来规划：深耕技术 持续突破</div>
+            
+            <div class="subsection">
+                <h2 class="subsection-title">4.1 2025年核心工作成果总结</h2>
+                <p class="text-content">
+                    2025年，立足岗位，以“技术赋能效率提升”为核心目标，聚焦VBA自动化、软硬件升级、AI工具融合三大方向，高效完成各项工作任务，尤其在长城汽车、金风科技等重点项目中锤炼了抗压能力与攻坚意识，取得了显著成果。
+                </p>
+
+                <ul class="custom-list">
+                    <li><span>效率突破：</span>通过VBA技术落地多个项目，累计优化工时100小时以上，人工重复操作减少90%；软硬件升级使整体办公效率提升30%。</li>
+                    <li><span>项目攻坚：</span>重点项目中实现日报效率提升60%、错误率降低75%、专项交付时效提升50%，金风科技项目通过AI联网功能实现零重要信息遗漏，展现了强抗压能力与责任担当。</li>
+                    <li><span>创新赋能：</span>整合多款工具插件解决团队共性难题20余项；构建“AI赋能+人工精进”工作模式，深度应用AI联网检索功能，释放70%基础工作时间，实现人机协同效率最优。</li>
+                    <li><span>能力提升：</span>熟练掌握VBA自动化开发、多类型AI工具应用（含联网功能）、软硬件运维等技能，从“执行型专员”向“技术型专员”转变。</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h2 class="subsection-title">4.2 2026年工作规划与展望</h2>
+                <p class="text-content">
+                    2026年，将继续以技术创新为驱动，深化人机协同模式，尤其强化AI联网功能在舆情监测中的应用，聚焦复杂舆情问题解决，进一步提升工作价值与服务质量。
+                </p>
+
+                <div class="ai-box">
+                    <div class="ai-title">三大核心规划方向</div>
+                    <ul class="custom-list">
+                        <li><strong>方向一：深化技术应用，打造自动化工具库</strong>
+                            <br>持续学习Python等编程语言，结合VBA开发更复杂的舆情自动化工具，覆盖舆情采集、分析、报告生成全流程；打造团队共享“自动化工具库”，推动技术成果规模化应用。
+                        </li>
+                        <li><strong>方向二：探索AI深度融合，构建智能舆情体系</strong>
+                            <br>深化AI联网检索功能的应用，尝试构建多维度、智能化的舆情预警模型，实现突发舆情自动识别与分级响应；探索AI生成式内容在专项报告中的应用，提升报告深度与专业性。
+                        </li>
+                        <li><strong>方向三：强化项目管理，提升复杂项目攻坚能力</strong>
+                            <br>总结长城汽车、金风科技等重点项目经验，形成标准化项目操作流程；主动承接更复杂的舆情专项项目，提升跨部门协作、应急响应、客户需求对接能力，向“项目负责人”角色进阶。
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="text-content">
+                    未来，我将以更饱满的热情、更务实的态度投入工作，持续深耕技术、创新方法，为公司业务发展贡献更大力量！
+                </p>
+            </div>
+
+            <div class="signature">
+                <p class="signature-text">述职人：周辉</p>
+                <p class="signature-text">2025年XX月XX日</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 打开弹窗
+        function openModal(modalId) {
+            // 隐藏所有弹窗
+            const allModals = document.querySelectorAll('.modal-mask');
+            allModals.forEach(modal => {
+                modal.classList.remove('modal-show');
+            });
+            // 显示目标弹窗
+            const targetModal = document.getElementById(modalId);
+            targetModal.classList.add('modal-show');
+            // 禁止背景滚动
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭弹窗
+        function closeModal(modalId) {
+            const targetModal = document.getElementById(modalId);
+            targetModal.classList.remove('modal-show');
+            // 恢复背景滚动
+            document.body.style.overflow = 'auto';
+        }
+
+        // 点击遮罩层关闭弹窗
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-mask')) {
+                event.target.classList.remove('modal-show');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
