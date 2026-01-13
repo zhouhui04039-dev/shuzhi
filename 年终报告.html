@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025年终述职报告 - 周辉</title>
+    <title>2025年度个人述职报告 - 周辉</title>
     <style>
         * {
             margin: 0;
@@ -13,13 +13,63 @@
         }
         body {
             background-color: #f0f7ff;
-            color: #333;
+            color: #000000; /* 全局字体改为黑色 */
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* 页面容器 - 控制页面切换 */
+        .page-container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+        /* 主页样式 */
+        .home-page {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 50px 0;
-            overflow-x: hidden;
+            min-height: 100vh;
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        /* 内容页面通用样式 */
+        .content-page {
+            width: 100%;
+            min-height: 100vh;
+            padding: 50px 100px;
+            display: none;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .content-page.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #1677ff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(22, 119, 255, 0.3);
+            transition: all 0.4s;
+            z-index: 999;
+        }
+        .back-btn:hover {
+            transform: scale(1.1) rotate(-10deg);
+            background-color: #0f52ba;
         }
         /* 主页头部 */
         .header {
@@ -34,7 +84,8 @@
         }
         .header-sub {
             font-size: 18px;
-            color: #6687b7;
+            color: #000000; /* 改为黑色 */
+            font-weight: 500;
         }
         /* 四宫格容器 */
         .grid-container {
@@ -57,8 +108,20 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(14, 89, 168, 0.12);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
             border: 4px solid #e8f3ff;
+            position: relative;
+            overflow: hidden;
+        }
+        .circle-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.8s;
         }
         .circle-card:hover {
             transform: scale(1.08) translateY(-10px);
@@ -66,98 +129,59 @@
             border-color: #1677ff;
             background-color: #f8fbff;
         }
+        .circle-card:hover::before {
+            left: 100%;
+        }
         .card-icon {
             font-size: 64px;
             color: #1677ff;
             margin-bottom: 25px;
+            transition: all 0.4s;
+        }
+        .circle-card:hover .card-icon {
+            transform: scale(1.2);
+            color: #0f52ba;
         }
         .card-title {
             font-size: 24px;
             color: #0f52ba;
-            font-weight: 600;
+            font-weight: 700;
             text-align: center;
             width: 80%;
+            transition: all 0.4s;
         }
-        /* 弹窗遮罩层 */
-        .modal-mask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        /* 大尺寸弹窗内容区（占屏幕85%） */
-        .modal-content {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -60%);
-            width: 85%;
-            min-width: 1100px;
-            height: 85vh;
-            background-color: #ffffff;
-            border-radius: 20px;
-            padding: 60px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: none;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            overflow-y: auto;
-        }
-        /* 弹窗显示状态 */
-        .modal-show {
-            display: block;
-            opacity: 1;
-        }
-        .modal-show .modal-content {
-            display: block;
-            opacity: 1;
-            transform: translate(-50%, -50%);
-        }
-        /* 关闭按钮 */
-        .close-btn {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #e8f3ff;
+        .circle-card:hover .card-title {
             color: #1677ff;
-            border: none;
-            cursor: pointer;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
         }
-        .close-btn:hover {
-            background-color: #1677ff;
-            color: #ffffff;
-            transform: rotate(90deg);
-        }
-        /* 弹窗内样式 */
-        .modal-header {
-            font-size: 32px;
+        /* 内容页面头部 */
+        .content-header {
+            font-size: 36px; /* 加大标题 */
             color: #0f52ba;
-            font-weight: 700;
+            font-weight: 800; /* 加粗 */
             margin-bottom: 40px;
             padding-bottom: 20px;
             border-bottom: 3px solid #e8f3ff;
+            text-align: center;
         }
         .subsection {
             margin-bottom: 50px;
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+        }
+        /* 分段渐入动画 */
+        .subsection:nth-child(2) { animation-delay: 0.2s; }
+        .subsection:nth-child(3) { animation-delay: 0.4s; }
+        .subsection:nth-child(4) { animation-delay: 0.6s; }
+        .subsection:nth-child(5) { animation-delay: 0.8s; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .subsection-title {
-            font-size: 24px;
+            font-size: 28px; /* 加大子标题 */
             color: #1e68c3;
+            font-weight: 700; /* 加粗 */
             margin-bottom: 25px;
             display: flex;
             align-items: center;
@@ -165,42 +189,56 @@
         }
         .subsection-title::before {
             content: "";
-            width: 6px;
-            height: 24px;
+            width: 8px; /* 加粗侧边线 */
+            height: 28px;
             background-color: #1677ff;
-            border-radius: 3px;
+            border-radius: 4px;
         }
         .text-content {
-            font-size: 16px;
-            color: #4e5969;
-            line-height: 1.9;
+            font-size: 17px; /* 加大正文字号 */
+            color: #000000; /* 改为黑色 */
+            line-height: 2.0;
             margin-bottom: 20px;
             text-align: justify;
         }
-        /* 案例卡片组 */
-        .case-group {
-            display: flex;
+        /* 核心亮点样式 */
+        .core-highlight {
+            font-size: 18px;
+            color: #1677ff; /* 改为蓝色 */
+            font-weight: 700;
+            background-color: #e8f3ff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 5px solid #1677ff;
+        }
+        /* 案例四宫格样式 */
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 30px;
             margin: 25px 0;
-            flex-wrap: wrap;
         }
         .case-card {
-            flex: 1;
-            min-width: 400px;
             background-color: #e8f3ff;
             border-radius: 12px;
             padding: 25px;
             border-left: 5px solid #1677ff;
+            transition: all 0.4s;
+        }
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(22, 119, 255, 0.1);
         }
         .case-title {
-            font-size: 18px;
+            font-size: 20px; /* 加大案例标题 */
             color: #0f52ba;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 15px;
         }
         .case-desc {
-            font-size: 15px;
-            color: #4e5969;
+            font-size: 16px;
+            color: #000000; /* 改为黑色 */
             line-height: 1.8;
         }
         /* 数据卡片组 */
@@ -217,16 +255,22 @@
             padding: 30px;
             background-color: #f0f7ff;
             border-radius: 12px;
+            transition: all 0.4s;
+        }
+        .data-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(22, 119, 255, 0.1);
         }
         .data-num {
-            font-size: 48px;
+            font-size: 52px; /* 加大数据字号 */
             color: #1677ff;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 10px;
         }
         .data-text {
-            font-size: 16px;
-            color: #6687b7;
+            font-size: 18px;
+            color: #000000; /* 改为黑色 */
+            font-weight: 600;
         }
         /* 列表样式 */
         .custom-list {
@@ -234,14 +278,14 @@
             margin: 20px 0;
         }
         .custom-list li {
-            font-size: 16px;
-            color: #4e5969;
-            line-height: 1.9;
+            font-size: 17px;
+            color: #000000; /* 改为黑色 */
+            line-height: 2.0;
             margin-bottom: 15px;
         }
         .custom-list li span {
             color: #1677ff;
-            font-weight: 600;
+            font-weight: 700;
         }
         /* 值班保障模块 */
         .duty-box {
@@ -249,11 +293,15 @@
             border-radius: 12px;
             padding: 30px;
             margin: 25px 0;
+            transition: all 0.4s;
+        }
+        .duty-box:hover {
+            box-shadow: 0 8px 15px rgba(22, 119, 255, 0.1);
         }
         .duty-title {
-            font-size: 18px;
+            font-size: 20px;
             color: #0f52ba;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 15px;
         }
         /* AI应用模块 */
@@ -262,12 +310,18 @@
             border-radius: 12px;
             padding: 30px;
             margin: 25px 0;
+            transition: all 0.4s;
+            border: 2px solid #1677ff; /* 突出AI模块 */
+        }
+        .ai-box:hover {
+            box-shadow: 0 8px 15px rgba(22, 119, 255, 0.2);
         }
         .ai-title {
-            font-size: 18px;
+            font-size: 22px;
             color: #0f52ba;
-            font-weight: 600;
+            font-weight: 800;
             margin-bottom: 15px;
+            text-align: center;
         }
         /* 项目卡片组 */
         .project-group {
@@ -283,11 +337,16 @@
             border-radius: 12px;
             padding: 30px;
             border-left: 5px solid #1677ff;
+            transition: all 0.4s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(22, 119, 255, 0.1);
         }
         .project-title {
-            font-size: 20px;
+            font-size: 22px;
             color: #0f52ba;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 20px;
             border-bottom: 2px solid #d1e7ff;
             padding-bottom: 10px;
@@ -298,71 +357,98 @@
             margin-top: 60px;
             padding-top: 30px;
             border-top: 2px solid #e8f3ff;
+            animation: fadeIn 1s ease 1s forwards;
+            opacity: 0;
         }
         .signature-text {
             font-size: 18px;
-            color: #4e5969;
+            color: #000000; /* 改为黑色 */
+            font-weight: 600;
             margin-bottom: 10px;
+        }
+        /* 响应式适配 */
+        @media (max-width: 1200px) {
+            .content-page {
+                padding: 50px 50px;
+            }
+            .grid-container {
+                width: 800px;
+            }
+        }
+        @media (max-width: 900px) {
+            .grid-container {
+                width: 100%;
+                grid-template-columns: 1fr;
+                gap: 50px;
+                padding: 0 20px;
+            }
+            .circle-card {
+                width: 300px;
+                height: 300px;
+            }
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+            .project-card {
+                min-width: 100%;
+            }
         }
     </style>
     <!-- 引入图标库 -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- 主页头部 -->
-    <div class="header">
-        <h1 class="header-title">2025年度个人述职报告</h1>
-        <p class="header-sub">国内业务部-客服枣庄-周辉</p>
-    </div>
+    <div class="page-container">
+        <!-- 主页 -->
+        <div class="home-page" id="homePage">
+            <div class="header">
+                <h1 class="header-title">2025年度个人述职报告</h1>
+                <p class="header-sub">国内业务部-客服枣庄-周辉</p>
+            </div>
 
-    <!-- 四宫格圆形卡片 -->
-    <div class="grid-container">
-        <!-- 卡片1：工作亮点 -->
-        <div class="circle-card" onclick="openModal('modal1')">
-            <div class="card-icon"><i class="fa-solid fa-wrench"></i></div>
-            <div class="card-title">工作亮点</div>
+            <!-- 四宫格圆形卡片 -->
+            <div class="grid-container">
+                <!-- 卡片1：工作亮点 -->
+                <div class="circle-card" onclick="navigateTo('page1')">
+                    <div class="card-icon"><i class="fa-solid fa-wrench"></i></div>
+                    <div class="card-title">工作亮点</div>
+                </div>
+                <!-- 卡片2：重点项目 -->
+                <div class="circle-card" onclick="navigateTo('page2')">
+                    <div class="card-icon"><i class="fa-solid fa-car"></i></div>
+                    <div class="card-title">重点项目</div>
+                </div>
+                <!-- 卡片3：工作创新 -->
+                <div class="circle-card" onclick="navigateTo('page3')">
+                    <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                    <div class="card-title">工作创新</div>
+                </div>
+                <!-- 卡片4：未来规划 -->
+                <div class="circle-card" onclick="navigateTo('page4')">
+                    <div class="card-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                    <div class="card-title">未来规划</div>
+                </div>
+            </div>
         </div>
-        <!-- 卡片2：重点项目 -->
-        <div class="circle-card" onclick="openModal('modal2')">
-            <div class="card-icon"><i class="fa-solid fa-car"></i></div>
-            <div class="card-title">重点项目</div>
-        </div>
-        <!-- 卡片3：工作创新 -->
-        <div class="circle-card" onclick="openModal('modal3')">
-            <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
-            <div class="card-title">工作创新</div>
-        </div>
-        <!-- 卡片4：未来规划 -->
-        <div class="circle-card" onclick="openModal('modal4')">
-            <div class="card-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
-            <div class="card-title">未来规划</div>
-        </div>
-    </div>
 
-    <!-- 弹窗1：工作亮点 -->
-    <div class="modal-mask" id="modal1">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('modal1')">&times;</button>
-            <div class="modal-header">一、工作亮点：技术赋能 效率倍增</div>
+        <!-- 页面1：工作亮点 -->
+        <div class="content-page" id="page1">
+            <button class="back-btn" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="content-header">一、工作亮点：技术赋能 效率倍增</div>
             
             <div class="subsection">
                 <h2 class="subsection-title">1.1 Excel VBA技术规模化落地</h2>
                 <p class="text-content">
-                    针对日常舆情工作中Excel数据处理重复繁琐、耗时久、易出错的痛点，2025年系统性研究VBA自动化技术，结合实际业务场景开发定制化脚本，全面落地至<span style="color: #1677ff; font-weight: 600;">HM日报、哈啰新闻稿周报、哈啰日报、长城日报、英格卡周报、优必选日报等多个项目</span>，实现数据采集、汇总、填充、校验全流程自动化，累计优化工时<span style="color: #1677ff; font-weight: 600;">100小时以上</span>，减少人工重复操作90%。
+                    针对日常舆情工作中Excel数据处理重复繁琐、耗时久、易出错的痛点，2025年系统性研究VBA自动化技术，结合实际业务场景开发定制化脚本，全面落地至<span style="color: #1677ff; font-weight: 700;">HM日报、哈啰新闻稿周报、哈啰日报、长城日报、英格卡周报、优必选日报等多个项目</span>，实现数据采集、汇总、填充、校验全流程自动化，累计优化工时<span style="color: #1677ff; font-weight: 700;">100小时以上</span>，减少人工重复操作90%。
                 </p>
 
-                <div class="case-group">
+                <!-- 案例四宫格 -->
+                <div class="case-grid">
                     <div class="case-card">
                         <div class="case-title">案例1：哈啰新闻稿周报优化</div>
                         <div class="case-desc">
                             <strong>原流程：</strong>手动新建sheet→逐条复制舆情字段→分类汇总→格式调整，单期需耗时40分钟，且易出现字段遗漏<br>
                             <strong>优化后：</strong>VBA脚本一键触发，自动建表、抓取数据、分类排版，单期耗时缩短至8分钟，效率提升80%，零失误率
-                            <!-- 新增视频展示区 -->
-                            <div style="margin-top:15px; border-radius:8px; overflow:hidden;">
-                            <video width="100%" controls="controls" poster="可选：视频封面图链接">
-                            <source src="https://zhouhui04039-dev.github.io/shuzhi/测试视频.mp4" type="video/mp4">
-                            </video>
-                            </div>
                         </div>
                     </div>
                     <div class="case-card">
@@ -372,8 +458,24 @@
                             <strong>优化后：</strong>VBA自动对接数据源→汇总数据→精准填充Word模板→自动校验，单期耗时缩短至5分钟，错误率降至0
                         </div>
                     </div>
+                    <div class="case-card">
+                        <div class="case-title">案例3：英格卡周报数据整合</div>
+                        <div class="case-desc">
+                            <strong>原流程：</strong>人工对多维度数据进行分类整理，手动创建数据透视表分析数据维度，流程繁琐且耗时，单期需耗时60分钟<br>
+                            <strong>优化后：</strong>VBA脚本自动对接多系统数据源→智能分类整理数据→自动生成数据透视表及可视化图表，单期耗时缩短至10分钟，效率提升83%
+                        </div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-title">案例4：优必选日报批量分发</div>
+                        <div class="case-desc">
+                            <strong>原流程：</strong>人工匹配媒体对应的媒体类型，无媒体类型的需核对账号名称，再根据账号名称人工判断媒体类型，单期需耗时50分钟，易出现匹配错误<br>
+                            <strong>优化后：</strong>提前搭建媒体数据库并设置对应关系，VBA脚本一键匹配并填充媒体对应的媒体类型，单期耗时缩短至7分钟，效率提升86%，匹配准确率100%
+                        </div>
+                    </div>
                 </div>
-                <p class="text-content"><strong>核心亮点：</strong>将技术能力转化为实际生产力，用自动化脚本替代90%的重复性人工操作，从“机械执行”转向“技术提效”，大幅降低人为失误率的同时释放大量核心工作时间。</p>
+                <div class="core-highlight">
+                    核心亮点：将技术能力转化为实际生产力，用自动化脚本替代90%的重复性人工操作，从“机械执行”转向“技术提效”，大幅降低人为失误率的同时释放大量核心工作时间。
+                </div>
             </div>
 
             <div class="subsection">
@@ -400,7 +502,9 @@
                         <div class="data-text">设备运行速度提升</div>
                     </div>
                 </div>
-                <p class="text-content"><strong>核心亮点：</strong>从基础保障层面系统性解决团队办公效率瓶颈，通过软硬件升级实现“零卡顿、零崩溃”的办公环境，为所有同事的日常工作提供了稳定的设备支撑。</p>
+                <div class="core-highlight">
+                    核心亮点：从基础保障层面系统性解决团队办公效率瓶颈，通过软硬件升级实现“零卡顿、零崩溃”的办公环境，为所有同事的日常工作提供了稳定的设备支撑。
+                </div>
             </div>
 
             <div class="subsection">
@@ -411,29 +515,29 @@
                 <p class="text-content">
                     <strong>培训内容：</strong>包括Excel函数进阶、VBA基础脚本编写、AI工具选型与应用、舆情分析智能化方法等，重点讲解了AI联网功能在舆情信息检索中的实操应用；<br>
                     <strong>培训形式：</strong>采用“理论讲解+实操演示+案例拆解”的方式，确保同事能够快速掌握并应用到实际工作中；<br>
-                    <strong>培训效果：</strong>累计开展培训6场，覆盖人员30余人次，团队整体办公效率平均提升15%。
+                    <strong>资源共享：</strong>主动提供个人VPN工具，为山东办事处同事提供稳定的外网访问渠道，解决了海外舆情监测外网访问受限的难题，体现了个人资源的无私贡献。
                 </p>
-                <p class="text-content"><strong>核心亮点：</strong>将个人技术能力转化为团队整体能力，通过技术分享实现“一人会到人人会”的效果，推动整个团队从“传统办公”向“智能办公”转型。</p>
+                <div class="core-highlight">
+                    核心亮点：不仅将个人技术能力转化为团队整体能力，更主动贡献个人VPN等私有资源，实现“一人会到人人会、一人有到人人用”的效果，全方位推动团队办公能力提升。
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 弹窗2：重点项目 -->
-    <div class="modal-mask" id="modal2">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('modal2')">&times;</button>
-            <div class="modal-header">二、重点项目：长城汽车&金风科技</div>
+        <!-- 页面2：重点项目 -->
+        <div class="content-page" id="page2">
+            <button class="back-btn" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="content-header">二、重点项目：长城汽车&金风科技</div>
             
             <div class="project-group">
                 <div class="project-card">
                     <div class="project-title">项目一：长城汽车舆情专项</div>
                     <div class="subsection">
-                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.1 承接项目的初心与想法</h2>
+                        <h2 class="subsection-title" style="font-size: 24px; margin-bottom: 15px;">2.1 承接项目的初心与想法</h2>
                         <p class="text-content">
                             长城汽车舆情专项报告项目，是我首次接触此类规模较大、要求较高的专项项目。面对这一全新挑战，我没有选择退缩，而是将其视为提升自身能力的重要机会，希望通过承接该项目突破自我舒适区，尝试掌握大型专项项目的运作模式、流程规范和交付标准，实现个人工作能力的跨越式提升。
                         </p>
 
-                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.2 执行过程的付出与辛苦</h2>
+                        <h2 class="subsection-title" style="font-size: 24px; margin-bottom: 15px;">2.2 执行过程的付出与辛苦</h2>
                         <p class="text-content">
                             由于项目初期对流程不熟悉、数据量较大且交付时间严格，在执行过程中面临诸多挑战，也付出了大量的时间和精力：
                         </p>
@@ -446,7 +550,7 @@
                             </ul>
                         </div>
 
-                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.3 熟悉项目后的优化方法</h2>
+                        <h2 class="subsection-title" style="font-size: 24px; margin-bottom: 15px;">2.3 熟悉项目后的优化方法</h2>
                         <p class="text-content">
                             随着对项目的熟悉，结合自身技术能力，制定了“批量处理+人机核验+规范输出”三维优化策略，大幅提升项目交付效率与质量。
                         </p>
@@ -461,18 +565,35 @@
                                 <br>针对专项报告中的数据热榜、趋势分析等标准化内容，由AI工具统一生成内容与格式，人工仅需进行最终核验；解决了人工撰写格式不统一、表述不规范的问题，专项报告交付时效提升50%。
                             </li>
                         </ul>
+
+                        <h2 class="subsection-title" style="font-size: 24px; margin-bottom: 15px;">2.4 工作成果</h2>
+                        <div class="data-group">
+                            <div class="data-card">
+                                <div class="data-num">300+</div>
+                                <div class="data-text">全年完成日报份数</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-num">700+</div>
+                                <div class="data-text">完成专项报告份数</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-num">100+</div>
+                                <div class="data-text">参与额外值班天数</div>
+                            </div>
+                        </div>
+                        <p class="text-content">通过技术优化与高强度投入，保质保量完成长城汽车舆情专项所有交付任务，报告交付及时率100%，客户满意度98%以上。</p>
                     </div>
                 </div>
 
                 <div class="project-card">
                     <div class="project-title">项目二：金风科技日常舆情服务</div>
                     <div class="subsection">
-                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.1 日常工作内容</h2>
+                        <h2 class="subsection-title" style="font-size: 24px; margin-bottom: 15px;">2.1 日常工作内容</h2>
                         <p class="text-content">
                             2025年持续为金风科技提供日常舆情日报服务，每日按时输出包含行业动态、竞品信息、品牌相关舆情的完整日报，确保客户能够及时掌握最新舆情态势。日报内容涵盖信息收集、分类整理、重点标注、趋势分析等多个维度，满足客户日常舆情监测需求。
                         </p>
 
-                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.2 AI联网功能的核心应用</h2>
+                        <h2 class="subsection-title" style="font-size: 24px; margin-bottom: 15px;">2.2 AI联网功能的核心应用</h2>
                         <p class="text-content">
                             为避免重要信息遗漏或泄露，创新性地运用AI工具的联网检索功能，构建了全方位的信息筛查体系：
                         </p>
@@ -491,10 +612,10 @@
                             </li>
                         </ul>
 
-                        <h2 class="subsection-title" style="font-size: 20px; margin-bottom: 15px;">2.3 工作成果</h2>
+                        <h2 class="subsection-title" style="font-size: 24px; margin-bottom: 15px;">2.3 工作成果</h2>
                         <div class="data-group">
                             <div class="data-card">
-                                <div class="data-num">365</div>
+                                <div class="data-num">200+</div>
                                 <div class="data-text">全年日报交付天数</div>
                             </div>
                             <div class="data-card">
@@ -511,13 +632,11 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- 弹窗3：工作创新 -->
-    <div class="modal-mask" id="modal3">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('modal3')">&times;</button>
-            <div class="modal-header">三、工作创新：破解痛点 释放人力</div>
+        <!-- 页面3：工作创新 -->
+        <div class="content-page" id="page3">
+            <button class="back-btn" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="content-header">三、工作创新：破解痛点 释放人力</div>
             
             <div class="subsection">
                 <h2 class="subsection-title">3.1 插件工具整合，攻克日常工作难题</h2>
@@ -526,23 +645,25 @@
                 </p>
 
                 <ul class="custom-list">
-                    <li><span>问题1：网页文本无法复制</span>
-                        <br>解决方案：引入supcopy插件，突破网页文本复制限制，支持各类舆情网站内容抓取，节省手动录入时间。
+                    <li><strong style="color: #000000;">问题1：网页文本无法复制</strong>
+                        <br><span style="color: #1677ff; font-weight: 700;">解决方案：</span>引入supcopy插件，突破网页文本复制限制，支持各类舆情网站内容抓取，节省手动录入时间。
                     </li>
-                    <li><span>问题2：舆情视频无法下载</span>
-                        <br>解决方案：配置专用视频下载插件，支持主流平台视频解析与下载，满足舆情素材留存需求。
+                    <li><strong style="color: #000000;">问题2：舆情视频无法下载</strong>
+                        <br><span style="color: #1677ff; font-weight: 700;">解决方案：</span>配置专用视频下载插件，支持主流平台视频解析与下载，满足舆情素材留存需求。
                     </li>
-                    <li><span>问题3：外网舆情监测受限</span>
-                        <br>解决方案：搭建稳定VPN通道，保障海外舆情网站的正常访问，实现舆情监测全覆盖。
+                    <li><strong style="color: #000000;">问题3：外网舆情监测受限</strong>
+                        <br><span style="color: #1677ff; font-weight: 700;">解决方案：</span>搭建稳定VPN通道，保障海外舆情网站的正常访问，实现舆情监测全覆盖。
                     </li>
-                    <li><span>问题4：网页截图效率低</span>
-                        <br>解决方案：部署自动截图插件，支持整页截图、定时截图，截图后自动保存至指定文件夹，提升截图效率。
+                    <li><strong style="color: #000000;">问题4：网页截图效率低</strong>
+                        <br><span style="color: #1677ff; font-weight: 700;">解决方案：</span>部署自动截图插件，支持整页截图、定时截图，截图后自动保存至指定文件夹，提升截图效率。
                     </li>
-                    <li><span>问题5：特殊数据处理复杂</span>
-                        <br>解决方案：结合VBA技术定制化开发脚本，解决非常规数据的清洗、转换、汇总问题，满足个性化需求。
+                    <li><strong style="color: #000000;">问题5：特殊数据处理复杂</strong>
+                        <br><span style="color: #1677ff; font-weight: 700;">解决方案：</span>结合VBA技术定制化开发脚本，解决非常规数据的清洗、转换、汇总问题，满足个性化需求。
                     </li>
                 </ul>
-                <p class="text-content"><strong>核心价值：</strong>将团队从繁琐的基础操作中解放出来，聚焦于舆情分析、策略制定等高价值工作，整体工作流畅度提升40%。</p>
+                <div class="core-highlight">
+                    核心价值：将团队从繁琐的基础操作中解放出来，聚焦于舆情分析、策略制定等高价值工作，整体工作流畅度提升40%。
+                </div>
             </div>
 
             <div class="subsection">
@@ -572,18 +693,16 @@
                     </ul>
                 </div>
 
-                <p class="text-content">
-                    核心创新点：<span style="color: #1677ff; font-weight: 600;">将AI定位为“虚拟员工”，尤其深度挖掘AI联网检索功能的价值，让AI承接所有重复性、基础性、标准化工作</span>，使人力聚焦于复杂舆情分析、客户需求对接、流程创新等高附加值工作，实现“人机协同”效率最优。
-                </p>
+                <div class="core-highlight">
+                    核心创新点：<span style="color: #1677ff; font-weight: 700;">将AI定位为“虚拟员工”，尤其深度挖掘AI联网检索功能的价值，让AI承接所有重复性、基础性、标准化工作</span>，使人力聚焦于复杂舆情分析、客户需求对接、流程创新等高附加值工作，实现“人机协同”效率最优。
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 弹窗4：未来规划 -->
-    <div class="modal-mask" id="modal4">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('modal4')">&times;</button>
-            <div class="modal-header">四、未来规划：深耕技术 持续突破</div>
+        <!-- 页面4：未来规划 -->
+        <div class="content-page" id="page4">
+            <button class="back-btn" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="content-header">四、未来规划：深耕技术 持续突破</div>
             
             <div class="subsection">
                 <h2 class="subsection-title">4.1 2025年核心工作成果总结</h2>
@@ -600,9 +719,9 @@
             </div>
 
             <div class="subsection">
-                <h2 class="subsection-title">4.2 2026年工作规划与展望</h2>
+                <h2 class="subsection-title">4.2 2026年工作规划与展望（AI为核心）</h2>
                 <p class="text-content">
-                    2026年，将继续以技术创新为驱动，深化人机协同模式，尤其强化AI联网功能在舆情监测中的应用，聚焦复杂舆情问题解决，进一步提升工作价值与服务质量。
+                    2026年，将以<span style="color: #1677ff; font-weight: 700;">AI技术深度应用</span>为核心战略方向，全面深化人机协同模式，通过系统化学习AI、场景化运用AI、规模化落地AI，实现个人工作能力和团队整体人效的双重提升。
                 </p>
 
                 <div class="ai-box">
@@ -620,8 +739,12 @@
                     </ul>
                 </div>
 
-                <p class="text-content">
-                    未来，我将以更饱满的热情、更务实的态度投入工作，持续深耕技术、创新方法，为公司业务发展贡献更大力量！
+                <div class="core-highlight">
+                    核心目标：2026年通过AI技术的全面应用，实现个人工作效率提升80%以上，团队整体人效提升50%以上，从“技术使用者”升级为“AI赋能专家”，为公司舆情工作的智能化转型提供核心支撑。
+                </div>
+
+                <p class="text-content" style="margin-top:20px; font-size:18px; font-weight:600;">
+                    未来，我将以更饱满的热情、更务实的态度投入工作，持续深耕AI技术、创新应用场景，用技术赋能业务，为公司发展贡献更大力量！
                 </p>
             </div>
 
@@ -633,37 +756,44 @@
     </div>
 
     <script>
-        // 打开弹窗
-        function openModal(modalId) {
-            // 隐藏所有弹窗
-            const allModals = document.querySelectorAll('.modal-mask');
-            allModals.forEach(modal => {
-                modal.classList.remove('modal-show');
+        // 页面导航函数
+        function navigateTo(pageId) {
+            // 隐藏主页
+            document.getElementById('homePage').style.opacity = 0;
+            setTimeout(() => {
+                document.getElementById('homePage').style.display = 'none';
+                // 显示目标页面
+                const targetPage = document.getElementById(pageId);
+                targetPage.style.display = 'block';
+                setTimeout(() => {
+                    targetPage.classList.add('active');
+                }, 50);
+            }, 400);
+        }
+
+        // 返回主页函数
+        function backToHome() {
+            // 隐藏所有内容页面
+            const allContentPages = document.querySelectorAll('.content-page');
+            allContentPages.forEach(page => {
+                page.classList.remove('active');
+                setTimeout(() => {
+                    page.style.display = 'none';
+                }, 400);
             });
-            // 显示目标弹窗
-            const targetModal = document.getElementById(modalId);
-            targetModal.classList.add('modal-show');
-            // 禁止背景滚动
-            document.body.style.overflow = 'hidden';
+            // 显示主页
+            setTimeout(() => {
+                document.getElementById('homePage').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('homePage').style.opacity = 1;
+                }, 50);
+            }, 400);
         }
 
-        // 关闭弹窗
-        function closeModal(modalId) {
-            const targetModal = document.getElementById(modalId);
-            targetModal.classList.remove('modal-show');
-            // 恢复背景滚动
-            document.body.style.overflow = 'auto';
-        }
-
-        // 点击遮罩层关闭弹窗
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal-mask')) {
-                event.target.classList.remove('modal-show');
-                document.body.style.overflow = 'auto';
-            }
+        // 页面加载时初始化
+        window.onload = function() {
+            document.getElementById('homePage').style.opacity = 1;
         }
     </script>
 </body>
-
 </html>
-
